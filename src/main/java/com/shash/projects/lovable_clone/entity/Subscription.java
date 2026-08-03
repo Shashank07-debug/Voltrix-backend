@@ -12,11 +12,14 @@ import java.time.Instant;
 @Getter
 @Setter
 public class Subscription {
+
     Long id;
     User user;
     Plan plan;
     SubscriptionStatus status;
+
     String stripeCustomerId;
+
     String stripeSubscriptionId;
     Instant currentPeriodStart;
     Instant currentPeriodEnd;

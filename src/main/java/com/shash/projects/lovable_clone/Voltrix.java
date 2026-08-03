@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LovableCloneApplication {
+public class Voltrix {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LovableCloneApplication.class, args);
+		SpringApplication.run(Voltrix.class, args);
 	}
 
 }
