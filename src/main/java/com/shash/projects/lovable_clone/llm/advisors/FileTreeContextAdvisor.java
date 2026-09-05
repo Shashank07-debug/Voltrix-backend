@@ -71,6 +71,7 @@ public class FileTreeContextAdvisor implements StreamAdvisor {
 
     @Override
     public String getName() {
+
         return "FileTreeContextAdvisor";
     }
 

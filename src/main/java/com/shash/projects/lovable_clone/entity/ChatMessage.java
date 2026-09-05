@@ -1,5 +1,6 @@
 package com.shash.projects.lovable_clone.entity;
 
+import com.shash.projects.lovable_clone.enums.ChatEventType;
 import com.shash.projects.lovable_clone.enums.MessageRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,10 @@ public class ChatMessage {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     MessageRole role; // USER, ASSISTANT
+
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("sequenceOrder ASC")
+    List<ChatEvent> events;
 
     @Column(columnDefinition = "text")
     String content; // NULL unless USER role
