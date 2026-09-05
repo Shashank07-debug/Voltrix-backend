@@ -25,25 +25,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     //Kind of Decorator Pattern
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-           try{
-               log.info("incoming request: {}", request.getRequestURI());
-               final String requestHeaderToken = request.getHeader("Authorization");
-               if(requestHeaderToken == null || !requestHeaderToken.startsWith("Bearer ")){
-                   filterChain.doFilter(request, response);
-                   return;
-               }
+        try{
+            log.info("incoming request: {}", request.getRequestURI());
+            final String requestHeaderToken = request.getHeader("Authorization");
+            if(requestHeaderToken == null || !requestHeaderToken.startsWith("Bearer ")){
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-               String jwtToken = requestHeaderToken.split("Bearer ")[1];
+            String jwtToken = requestHeaderToken.split("Bearer ")[1];
 
-               JwtUserPrinciple user = authUtil.verifyAccessToken(jwtToken);
+            JwtUserPrinciple user = authUtil.verifyAccessToken(jwtToken);
 
-               if(user != null && SecurityContextHolder.getContext().getAuthentication() == null){
-                   UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.authorities());
-                   SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-               }
-               filterChain.doFilter(request, response);
-           }catch (Exception e){
-               handlerExceptionResolver.resolveException(request, response, null, e);
-           }
-       }
+            if(user != null && SecurityContextHolder.getContext().getAuthentication() == null){
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.authorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+            filterChain.doFilter(request, response);
+        }catch (Exception e){
+            handlerExceptionResolver.resolveException(request, response, null, e);
+        }
+    }
 }

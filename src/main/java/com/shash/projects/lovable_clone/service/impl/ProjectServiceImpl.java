@@ -15,6 +15,7 @@ import com.shash.projects.lovable_clone.repository.ProjectRepository;
 import com.shash.projects.lovable_clone.repository.UserRepository;
 import com.shash.projects.lovable_clone.security.AuthUtil;
 import com.shash.projects.lovable_clone.service.ProjectService;
+import com.shash.projects.lovable_clone.service.ProjectTemplateService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
+    ProjectTemplateService projectTemplateService;
 
 
     @Override
@@ -60,6 +62,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+        projectTemplateService.initializeProjectFormTemplate(project.getId());
+
         return projectMapper.toProjectResponse(project);
     }
     @Override
