@@ -93,7 +93,7 @@ public class AiGenerationServiceImpl implements AiGenerationService {
                     });
 
                 })
-                .doOnError(error -> log.error("Error during streaming for projectId: {}", projectId))
+                .doOnError(error -> log.error("Error during streaming for projectId: {}, error: {}", projectId, error.getMessage()))
                 .map(response -> Objects.requireNonNull(response.getResult().getOutput().getText()));
 
     }
