@@ -5,7 +5,6 @@ import com.shash.projects.lovable_clone.enums.ChatEventType;
 
 public record ChatEventResponse(
         Long id,
-        ChatMessage chatMessage,
         ChatEventType type,
         Integer sequenceOrder,
         String content,

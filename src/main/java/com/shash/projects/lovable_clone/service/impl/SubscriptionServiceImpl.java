@@ -36,7 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
     private final PlanRepository planRepository;
     private final ProjectMemberRepository projectMemberRepository;
-    private final Integer FREE_TRIER_PROJECTS_ALLOWED = 1;
+    private final Integer FREE_TRIER_PROJECTS_ALLOWED = 3;
 
 
     @Override

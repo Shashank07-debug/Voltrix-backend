@@ -15,14 +15,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ChatServiceImpl implements ChatService {
 
     private final ChatMessageRepository chatMessageRepository;
-    private final AuthUtil authUtil;
     private final ChatSessionRepository chatSessionRepository;
+    private final AuthUtil authUtil;
     private final ChatMapper chatMapper;
 
     @Override
@@ -38,3 +39,4 @@ public class ChatServiceImpl implements ChatService {
         return chatMapper.fromListOfChatMessage(chatMessageList);
     }
 }
+

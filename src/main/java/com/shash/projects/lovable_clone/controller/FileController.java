@@ -3,31 +3,31 @@ package com.shash.projects.lovable_clone.controller;
 
 import com.shash.projects.lovable_clone.dto.project.FileContentResponse;
 import com.shash.projects.lovable_clone.dto.project.FileNode;
+import com.shash.projects.lovable_clone.dto.project.FileTreeResponse;
 import com.shash.projects.lovable_clone.service.ProjectFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/projects/{projectId}/files")
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/projects/{projectId}/files")
 public class FileController {
 
     private final ProjectFileService projectFileService;
 
     @GetMapping
-    public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId){
+    public ResponseEntity<FileTreeResponse> getFileTree(@PathVariable Long projectId) {
         return ResponseEntity.ok(projectFileService.getFileTree(projectId));
     }
 
-
-    @GetMapping("/{*path}")
-    public ResponseEntity<FileContentResponse> getFile(@PathVariable Long projectId, @PathVariable String path){
+    @GetMapping("/content")
+    public ResponseEntity<FileContentResponse> getFile(
+            @PathVariable Long projectId,
+            @RequestParam String path) {
         return ResponseEntity.ok(projectFileService.getFileContent(projectId, path));
     }
+
 }

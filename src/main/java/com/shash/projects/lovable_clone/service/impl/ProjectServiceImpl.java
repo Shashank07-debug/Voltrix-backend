@@ -8,6 +8,7 @@ import com.shash.projects.lovable_clone.entity.ProjectMember;
 import com.shash.projects.lovable_clone.entity.ProjectMemberId;
 import com.shash.projects.lovable_clone.entity.User;
 import com.shash.projects.lovable_clone.enums.ProjectRole;
+import com.shash.projects.lovable_clone.error.BadRequestException;
 import com.shash.projects.lovable_clone.error.ResourceNotFoundException;
 import com.shash.projects.lovable_clone.mapper.ProjectMapper;
 import com.shash.projects.lovable_clone.repository.ProjectMemberRepository;
@@ -69,16 +70,20 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
         Long userId = authUtil.getCurrentUserId();
-        var projects = projectRepository.findAllAccessibleByUser(userId);
-        return projectMapper.toListOfProjectSummaryResponse(projects);
+        var projectsWithRoles = projectRepository.findAllAccessibleByUser(userId);
+        return projectsWithRoles.stream()
+                .map(p -> projectMapper.toProjectSummaryResponse(p.getProject(), p.getRole()))
+                .toList();
     }
 
     @Override
     @PreAuthorize("@security.canViewProject(#projectId)")
-    public ProjectResponse getUserProjectById(Long projectId) {
+    public ProjectSummaryResponse getUserProjectById(Long projectId) {
         Long userId = authUtil.getCurrentUserId();
-        Project project = getAccessibleProjectById(projectId, userId);
-        return projectMapper.toProjectResponse(project);
+        ProjectRepository.ProjectWithRole projectWithRole = projectRepository.findAccessibleProjectByIdWithRole(projectId, userId)
+                .orElseThrow(() ->  new BadRequestException("Project Not Found"));
+
+        return projectMapper.toProjectSummaryResponse(projectWithRole.getProject(), projectWithRole.getRole());
     }
 
     @Override
