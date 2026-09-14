@@ -1,9 +1,11 @@
 package com.shash.projects.lovable_clone.controller;
 
+import com.shash.projects.lovable_clone.dto.deploy.DeployResponse;
 import com.shash.projects.lovable_clone.dto.project.ProjectRequest;
 import com.shash.projects.lovable_clone.dto.project.ProjectResponse;
 import com.shash.projects.lovable_clone.dto.project.ProjectSummaryResponse;
 import com.shash.projects.lovable_clone.security.AuthUtil;
+import com.shash.projects.lovable_clone.service.DeploymentService;
 import com.shash.projects.lovable_clone.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final DeploymentService deploymentService;
 
 
     @GetMapping
@@ -45,5 +48,10 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id){
         projectService.softDelete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/deploy")
+    public ResponseEntity<DeployResponse> deployProject(@PathVariable Long id) {
+        return ResponseEntity.ok(deploymentService.deploy(id));
     }
 }
